@@ -2,7 +2,11 @@ import React from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 
-const Layout = ({ children }) => {
+interface ILayoutProps {
+    children: React.ReactElement,
+}
+
+const Layout = ({ children }: ILayoutProps) => {
     return (
         <>
             <Navbar />
