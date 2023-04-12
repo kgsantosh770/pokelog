@@ -75,7 +75,7 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
             <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
               {
                 pokemonsToShow.map((pokemon) => (
-                  <PokemonCard key={pokemon.id} number={pokemon.number} name={pokemon.name} types={pokemon.types} image={pokemon.image} />
+                  <PokemonCard key={pokemon.id} pokemon={pokemon} />
                 ))
               }
             </div>
