@@ -1,37 +1,89 @@
 import Pager from "@/components/Pager"
 import PokemonCard from "@/components/PokemonCard"
-import { useState } from "react"
-import { useQuery } from '@apollo/client'
 import GET_BY_FIRST from "@/utils/queries/getByFirst"
-import { IPokemonsQueryData } from "@/lib/types"
+import apolloClient from "@/utils/apolloClient"
+import { useEffect, useState } from "react"
+import { IPokemon, IPokemonsQueryData } from "@/lib/types"
 
-export default function Home() {
+// pre load first set of pokemons in the build time
+export const getStaticProps = async () => {
+  const count: string | undefined = process.env?.NEXT_PUBLIC_POKEMONS_PRELOAD_COUNT
+  const query = GET_BY_FIRST
+  const variables = { first: Number(count) ?? 20 }
+  const { data }: IPokemonsQueryData = await apolloClient.query({ query, variables })
+  const pokemons = data?.pokemons
+
+  return {
+    props: {
+      pokemons: pokemons
+    }
+  }
+}
+
+
+const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
+
+  // slice the pokemon array based on the pageNumber
+  const slicePerPage = (array: IPokemon[], pageNumber: number, count: number) => {
+    return array.slice((pageNumber - 1) * count, pageNumber * count);
+  }
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageEnded, setPageEnded] = useState(false)
-  const { data, error, loading }: IPokemonsQueryData = useQuery(GET_BY_FIRST, {
-    variables: { "first": 20 },
-  })
+  const [endPage, setEndPage] = useState<number | undefined>(undefined)
+  const [allPokemons, setAllPokemons] = useState(pokemons)
+  const [loading, setLoading] = useState(false)
+  const [pokemonsToShow, setPokemonsToShow] = useState(slicePerPage(allPokemons, currentPage, 20))
 
-  if (loading || !data) return <p>Loading....</p>
+  useEffect(() => {
+    // on every page change scroll the window to top
+    window.scrollY !== 0 && window.scrollTo(0, 0);
+
+    // fetch the pokemons and update the states
+    const fetchPokemons = async () => {
+      const query = GET_BY_FIRST
+      const variables = { first: currentPage * 20 }
+      const { data }: IPokemonsQueryData = await apolloClient.query({ query, variables })
+      if (data?.pokemons) {
+        setAllPokemons(data.pokemons);
+        setPokemonsToShow(slicePerPage(data.pokemons, currentPage, 20))
+      }
+    }
+
+    // check for pokemons availablity of the current page and fetch if no data found
+    const slicedPokemons = slicePerPage(allPokemons, currentPage, 20);
+    if (slicedPokemons.length === 0) {
+      setLoading(true)
+      fetchPokemons();
+    } else {
+      setPokemonsToShow(slicedPokemons);
+    }
+  }, [currentPage])
+
+  // when there is no more data limit the page count
+  useEffect(() => {
+    setLoading(false);
+    pokemonsToShow.length === 0 && setEndPage(currentPage - 1);
+  }, [pokemonsToShow])
 
   return (
     <main className="mx-10 md:mx-14 lg:mx-20 mt-5 mb-10">
       {
-        error ?
-          error.message :
+        loading ?
+          <p>Loading...</p> :
           <>
             <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
             <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
               {
-                data.pokemons.map((pokemon) => (
+                pokemonsToShow.map((pokemon) => (
                   <PokemonCard key={pokemon.id} number={pokemon.number} name={pokemon.name} types={pokemon.types} image={pokemon.image} />
                 ))
               }
             </div>
-            <Pager currentPage={currentPage} pageEnded={pageEnded} setCurrentPage={setCurrentPage} className="mt-5 sm:mt-10" />
           </>
       }
+      <Pager currentPage={currentPage} endPage={endPage} setCurrentPage={setCurrentPage} className="mt-5 sm:mt-10" />
     </main>
   )
 }
+
+export default Home

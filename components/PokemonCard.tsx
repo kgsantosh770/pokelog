@@ -10,7 +10,7 @@ interface IPokemonProps {
 
 const PokemonCard = (props: IPokemonProps) => {
     return (
-        <div className='bg-white text-black rounded-md mb-5 overflow-hidden mx-auto group max-w-xs sm:px-1 md:px-1 lg:px-1'>
+        <button className='bg-white text-black rounded-md mb-5 overflow-hidden mx-auto group max-w-xs sm:px-1 md:px-1 lg:px-1'>
             <img src={props.image} alt={props.name} className='scale-90 group-hover:scale-100 transition-all mx-auto w-48 h-48 object-contain'/>
             <div className="px-4 pb-4">
                 <p className='text-gray-500 font-bold mb-1'>#{props.number}</p>
@@ -25,7 +25,7 @@ const PokemonCard = (props: IPokemonProps) => {
                     }
                 </div>
             </div>
-        </div>
+        </button>
     )
 }
 

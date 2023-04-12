@@ -12,6 +12,4 @@ const GET_BY_FIRST = gql`
   }
 `
 
-
-
 export default GET_BY_FIRST

@@ -4,7 +4,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 interface IPagerProps {
     currentPage: number,
     setCurrentPage: Dispatch<SetStateAction<number>>,
-    pageEnded: boolean,
+    endPage: number | undefined,
     className?: string,
 }
 
@@ -16,7 +16,7 @@ const Pager = (props: IPagerProps) => {
         if (direction === 'left' && props.currentPage > 1) {
             allPages.length > 3 && setAllPages(allPages.slice(0, allPages.length - 1))
             props.setCurrentPage(props.currentPage - 1);
-        } else if (direction === 'right' && !props.pageEnded) {
+        } else if (direction === 'right' && props.endPage !== props.currentPage) {
             props.currentPage + 1 > allPages.length && setAllPages([...allPages, props.currentPage + 1]);
             props.setCurrentPage(props.currentPage + 1);
         }
@@ -25,24 +25,24 @@ const Pager = (props: IPagerProps) => {
     return (
         <div className={`flex justify-center items-center ${props.className}`}>
             <button onClick={() => handleArrowClick('left')} disabled={props.currentPage <= 1}>
-                <KeyboardArrowLeft fontSize='large' />
+                <KeyboardArrowLeft fontSize='large' style={{color: props.currentPage <= 1 ? 'gray' : 'white'}}/>
             </button>
             {
                 (allPages.slice(-3)).map((pageNumber) =>
-                    <div
+                    <button
                         key={pageNumber}
                         className={`
                             ${props.currentPage === pageNumber && 'bg-gray-500'}
-                            font-medium border-2 border-white w-10 h-10 text-center pt-1 rounded-full mx-2
+                            font-medium border-2 border-white w-10 h-10 text-center rounded-full mx-2
                         `}
                         onClick={() => props.setCurrentPage(pageNumber)}
                     >
                         {pageNumber}
-                    </div>
+                    </button>
                 )
             }
-            <button onClick={() => handleArrowClick('right')} disabled={props.pageEnded}>
-                <KeyboardArrowRight fontSize='large' />
+            <button onClick={() => handleArrowClick('right')} disabled={props.endPage === props.currentPage}>
+                <KeyboardArrowRight fontSize='large' style={{color: props.endPage === props.currentPage ? 'gray' : 'white'}}/>
             </button>
         </div>
     )
