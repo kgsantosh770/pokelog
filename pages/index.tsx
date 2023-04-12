@@ -179,6 +179,7 @@ export default function Home() {
 
   return (
     <main className="mx-10 md:mx-14 lg:mx-20 my-5">
+      <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
       <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
         {
           pokemons.map((pokemon) => (
