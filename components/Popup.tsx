@@ -1,33 +1,17 @@
-import { IPokemon, IPokemonEvolutionQueryData } from '@/lib/types';
-import apolloClient from '@/utils/api/services/apolloClient';
-import GET_EVOLUTION from '@/utils/api/queries/getEvolution';
-import { Close, Info, KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import Chip from './Chip';
+import { IPokemon } from '@/lib/types';
+import { Info, KeyboardArrowDown, KeyboardArrowRight, Error } from '@mui/icons-material';
 
 interface IPopupProps {
     isPopupOpen: boolean,
     setIsPopupOpen: Dispatch<SetStateAction<boolean>>,
-    pokemonId: string,
-    pokemonName: string,
+    evolutions: IPokemon[] | undefined,
+    error: string | null,
+    loading: boolean,
 }
 
 const Popup = (props: IPopupProps) => {
-
-    const [evolutions, setEvolutions] = useState<IPokemon[]>([]);
-
-    useEffect(() => {
-        const getEvolution = async () => {
-            const query = GET_EVOLUTION
-            const variables = { id: props.pokemonId, name: props.pokemonName }
-            const { data }: IPokemonEvolutionQueryData = await apolloClient.query({ query, variables })
-            const response = data?.pokemon?.evolutions ?? []
-            setEvolutions(response);
-        }
-
-        getEvolution();
-
-    }, [])
 
     useEffect(() => {
         if (props.isPopupOpen) window.document.body.style.overflow = "hidden";
@@ -36,7 +20,7 @@ const Popup = (props: IPopupProps) => {
 
     const Pokemon = ({ pokemon }: { pokemon: IPokemon }) => {
         return (
-            <div>
+            <div className='md:mx-7'>
                 <img
                     src={pokemon.image}
                     alt={pokemon.name}
@@ -73,7 +57,7 @@ const Popup = (props: IPopupProps) => {
             <div className="fixed inset-0 flex justify-center items-center">
                 <div className="bg-gray-800 overflow-scroll px-8 py-16 rounded-lg w-[80%] md:max-w-screen-md h-fit max-h-[80%]">
                     <button
-                        className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-600"
+                        className="absolute top-0 right-0 md:top-5 md:right-10 m-4 text-gray-500 hover:text-gray-600"
                         onClick={() => props.setIsPopupOpen(false)}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 sm:w-10 md:h-10 text-white">
@@ -81,30 +65,47 @@ const Popup = (props: IPopupProps) => {
                         </svg>
 
                     </button>
-                    <div className="text-center md:flex md:flex-wrap md:justify-around">
-                        {evolutions.length > 0 && <h2 className="text-3xl font-bold mb-14 md:basis-full">Evolutions</h2>}
+                    <div className="text-center md:flex md:flex-wrap md:justify-center">
                         {
-                            evolutions.length > 0 ?
-                                evolutions.map((pokemon, index) => (
+                            props.loading ?
+                                <p className='text-lg font-medium'>Loading</p> :
+                                props.error !== null ?
                                     <>
-                                        <Pokemon key={index} pokemon={pokemon} />
+                                        <Error sx={{ mb: 2 }} fontSize='large' />
+                                        <p className='text-lg font-medium'>
+                                            {props.error}
+                                        </p>
+                                    </> :
+                                    <>
+                                        {props.evolutions && props.evolutions.length > 0 && <h2 className="text-3xl font-bold mb-14 md:basis-full">Evolutions</h2>}
                                         {
-                                            index !== evolutions.length - 1 &&
-                                            <>
-                                                <div key={index} className="hidden md:block">
-                                                    <KeyboardArrowRight sx={{ mt: 6, fontSize: 60 }} />
-                                                </div>
-                                                <div key={index} className="md:hidden">
-                                                    <KeyboardArrowDown sx={{ my: 4, fontSize: 60 }} />
-                                                </div>
-                                            </>
+                                            props.evolutions && props.evolutions.length > 0 ?
+                                                props.evolutions.map((pokemon, index) => (
+                                                    <div key={index} className='md:flex'>
+                                                        <Pokemon pokemon={pokemon} />
+                                                        {
+                                                            props.evolutions && index !== props.evolutions.length - 1 &&
+                                                            <>
+                                                                <div className="hidden md:block">
+                                                                    <KeyboardArrowRight sx={{ mt: 6, fontSize: 60 }} />
+                                                                </div>
+                                                                <div className="md:hidden">
+                                                                    <KeyboardArrowDown sx={{ my: 4, fontSize: 60 }} />
+                                                                </div>
+                                                            </>
+                                                        }
+                                                    </div>
+                                                )) :
+                                                <>
+                                                    <Info sx={{ mb: 2 }} fontSize='large' />
+                                                    <p className='text-lg font-medium'>
+                                                        Pokemon has not evolved further.
+                                                    </p>
+                                                </>
                                         }
                                     </>
-                                )) :
-                                <>
-                                    <Info sx={{ mb: 2 }} fontSize='large' />
-                                    <p className='text-lg font-medium'>Pokemon is not evolved yet</p>
-                                </>
+
+
                         }
                     </div>
                 </div>

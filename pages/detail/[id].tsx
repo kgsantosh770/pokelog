@@ -1,12 +1,13 @@
 import Chip from '@/components/Chip'
 import Popup from '@/components/Popup'
-import { IPokemonsQueryData, ISinglePokemon, ISinglePokemonQueryData } from '@/lib/types'
 import apolloClient from '@/utils/api/services/apolloClient'
 import getPageTitle from '@/utils/getPageTitle'
 import GET_BY_ID from '@/utils/api/queries/getById'
 import GET_IDS_AND_NAMES from '@/utils/api/queries/getIdsAndNames'
 import Head from 'next/head'
+import { IPokemon, IPokemonsQueryData, ISinglePokemon, ISinglePokemonQueryData } from '@/lib/types'
 import { useState } from 'react'
+import { queryEvolutions } from '@/utils/api/services/apolloQuery'
 
 export const getStaticPaths = async () => {
     const count: string | undefined = process.env?.NEXT_PUBLIC_SINGLE_POKEMON_PRELOAD_COUNT
@@ -43,6 +44,9 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
 
     const subtitlesStyle = "font-medium text-xl"
     const [isPopupOpen, setIsPopupOpen] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [loading, setLoading] = useState(false)
+    const [evolutions, setEvolutions] = useState<IPokemon[] | undefined>()
 
     function Property({ property, propertyValue }: { property: string, propertyValue: string[] }) {
         return propertyValue.length > 0 ?
@@ -63,6 +67,21 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
             ) : <></>
     }
 
+    // open popup and fetch the evolutions data
+    const handleEvolutionButtonClick = async () => {
+        setError(null)
+        setEvolutions([])
+        setLoading(true)
+        setIsPopupOpen(true)
+        try {
+            const { data, error } = await queryEvolutions(pokemon.id, pokemon.name)
+            error ? setError(error.message) : data && setEvolutions(data.pokemon.evolutions);
+        } catch (error) {
+            setError("Unexpected error occured")
+        }
+        setLoading(false)
+    }
+
     return (
         <>
             <Head>
@@ -71,8 +90,9 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
             <Popup
                 isPopupOpen={isPopupOpen}
                 setIsPopupOpen={setIsPopupOpen}
-                pokemonId={pokemon.id}
-                pokemonName={pokemon.name}
+                evolutions={evolutions}
+                error={error}
+                loading={loading}
             />
             <main className="mx-10 md:mx-14 lg:mx-20 mt-10 mb-20">
                 <h2 className='font-bold text-3xl text-center'>{pokemon.name}</h2>
@@ -102,7 +122,7 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
                         <Property property="Resistant" propertyValue={pokemon.resistant} />
                         <Property property="Weaknesses" propertyValue={pokemon.weaknesses} />
                         <button
-                            onClick={() => setIsPopupOpen(true)}
+                            onClick={() => handleEvolutionButtonClick()}
                             className={`mt-10 bg-gray-600 rounded-md text-white px-5 py-3 w-full ${subtitlesStyle}`}
                         >
                             Evolution
