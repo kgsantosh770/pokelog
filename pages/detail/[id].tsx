@@ -1,22 +1,17 @@
 import Chip from '@/components/Chip'
 import Popup from '@/components/Popup'
-import apolloClient from '@/utils/api/services/apolloClient'
 import getPageTitle from '@/utils/getPageTitle'
-import GET_BY_ID from '@/utils/api/queries/getById'
-import GET_IDS_AND_NAMES from '@/utils/api/queries/getIdsAndNames'
 import Head from 'next/head'
 import { IPokemon, IPokemonsQueryData, ISinglePokemon, ISinglePokemonQueryData } from '@/lib/types'
-import { useState } from 'react'
-import { queryEvolutions } from '@/utils/api/services/apolloQuery'
+import { useEffect, useState } from 'react'
+import { queryEvolutions, queryIdsAndNames, querySinglePokemon } from '@/utils/api/services/apolloQuery'
 
 export const getStaticPaths = async () => {
     const count: string | undefined = process.env?.NEXT_PUBLIC_SINGLE_POKEMON_PRELOAD_COUNT
-    const query = GET_IDS_AND_NAMES
-    const variables = { first: Number(count) ?? 20 }
-    const { data }: IPokemonsQueryData = await apolloClient.query({ query, variables })
+    const { data, error }: IPokemonsQueryData = await queryIdsAndNames(count)
     const pokemons = data?.pokemons
 
-    const paths = pokemons?.map((pokemon) => {
+    const paths = !pokemons || error ? [] : pokemons.map((pokemon) => {
         return {
             params: { id: pokemon.id, name: pokemon.name }
         }
@@ -24,19 +19,25 @@ export const getStaticPaths = async () => {
 
     return {
         paths,
-        fallback: false,
+        fallback: 'blocking',
     }
 }
 
 export const getStaticProps = async ({ params }: { params: { id: string, name: string } }) => {
-    const query = GET_BY_ID
-    const variables = { id: params.id, name: params.name }
-    const { data }: ISinglePokemonQueryData = await apolloClient.query({ query, variables })
+    let props
+    const { data, error }: ISinglePokemonQueryData = await querySinglePokemon(params.id, params.name)
+
+    if (error)
+        props = { error: error.message }
+    else if (!data)
+        props = { error: "Unexpected error occured. Please try again." }
+    else if (data.pokemon === null)
+        return { notFound: true }
+    else
+        props = { pokemon: data.pokemon }
 
     return {
-        props: {
-            pokemon: data?.pokemon,
-        }
+        props
     }
 }
 
