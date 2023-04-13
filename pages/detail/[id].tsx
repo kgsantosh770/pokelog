@@ -1,39 +1,41 @@
 import Chip from '@/components/Chip'
-import { ISinglePokemon } from '@/lib/types'
+import { IPokemonsQueryData, ISinglePokemon, ISinglePokemonQueryData } from '@/lib/types'
+import apolloClient from '@/utils/apolloClient'
+import GET_BY_ID from '@/utils/queries/getById'
+import GET_IDS_AND_NAMES from '@/utils/queries/getIdsAndNames'
 
-const Details = () => {
-    const pokemon: ISinglePokemon = {
-        id: "UG9rZW1vbjowMDE=",
-        number: "001",
-        name: "Bulbasaur",
-        weight: {
-            "minimum": "6.04kg",
-            "maximum": "7.76kg"
-        },
-        height: {
-            "minimum": "0.61m",
-            "maximum": "0.79m"
-        },
-        classification: "Seed Pokémon",
-        types: [
-            "Grass",
-            "Poison"
-        ],
-        resistant: [
-            "Water",
-            "Electric",
-            "Grass",
-            "Fighting",
-            "Fairy"
-        ],
-        weaknesses: [
-            "Fire",
-            "Ice",
-            "Flying",
-            "Psychic"
-        ],
-        image: "https://img.pokemondb.net/artwork/bulbasaur.jpg"
+export const getStaticPaths = async () => {
+    const count: string | undefined = process.env?.NEXT_PUBLIC_SINGLE_POKEMON_PRELOAD_COUNT
+    const query = GET_IDS_AND_NAMES
+    const variables = { first: Number(count) ?? 20 }
+    const { data }: IPokemonsQueryData = await apolloClient.query({ query, variables })
+    const pokemons = data?.pokemons
+
+    const paths = pokemons?.map((pokemon) => {
+        return {
+            params: { id: pokemon.id, name: pokemon.name }
+        }
+    })
+
+    return {
+        paths,
+        fallback: false,
     }
+}
+
+export const getStaticProps = async ({ params }: { params: { id: string, name: string } }) => {
+    const query = GET_BY_ID
+    const variables = { id: params.id, name: params.name }
+    const { data }: ISinglePokemonQueryData = await apolloClient.query({ query, variables })
+
+    return {
+        props: {
+            pokemon: data?.pokemon,
+        }
+    }
+}
+
+const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
 
     const subtitlesStyle = "font-medium text-xl"
 
@@ -53,7 +55,6 @@ const Details = () => {
             </div>
         </div>
     )
-
 
     return (
         <main className="mx-10 md:mx-14 lg:mx-20 mt-10 mb-20">
