@@ -1,8 +1,10 @@
 import Chip from '@/components/Chip'
 import { IPokemonsQueryData, ISinglePokemon, ISinglePokemonQueryData } from '@/lib/types'
 import apolloClient from '@/utils/apolloClient'
+import getPageTitle from '@/utils/getPageTitle'
 import GET_BY_ID from '@/utils/queries/getById'
 import GET_IDS_AND_NAMES from '@/utils/queries/getIdsAndNames'
+import Head from 'next/head'
 
 export const getStaticPaths = async () => {
     const count: string | undefined = process.env?.NEXT_PUBLIC_SINGLE_POKEMON_PRELOAD_COUNT
@@ -57,48 +59,53 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
     )
 
     return (
-        <main className="mx-10 md:mx-14 lg:mx-20 mt-10 mb-20">
-            <h2 className='font-bold text-3xl text-center'>{pokemon.name}</h2>
-            <h3 className='font-bold text-2xl text-center mb-5 sm:mb-10'>#{pokemon.number}</h3>
-            <div className='max-w-sm mx-auto sm:flex sm:justify-center sm:max-w-screen-xl'>
-                <img src={pokemon.image} alt={pokemon.name} className='w-full rounded-md sm:w-72 sm:h-72 lg:w-96 lg:h-96' />
-                <div className="details sm:ml-16">
-                    <div className="mt-5 mb-10 bg-gray-900 px-4 py-2 rounded-md sm:mt-0">
-                        <div>
-                            <div className="mb-5">
-                                <p className={`mb-1 ${subtitlesStyle}`}>Height:</p>
-                                <span className='mr-4'><span className='font-medium'>Min - </span> {pokemon.height.minimum}</span>
-                                <span><span className='font-medium'>Max - </span> {pokemon.height.maximum}</span>
-                            </div>
-                            <div className="mb-5">
-                                <p className={`mb-1 ${subtitlesStyle}`}>Weight:</p>
-                                <span className='mr-4'><span className='font-medium'>Min - </span> {pokemon.weight.minimum}</span>
-                                <span><span className='font-medium'>Max - </span> {pokemon.weight.maximum}</span>
-                            </div>
-                            <div className="mb-5">
-                                <p className={` mb-1 ${subtitlesStyle}`}>Classification:</p>
-                                <p>{pokemon.classification}</p>
+        <>
+            <Head>
+                <title>{getPageTitle(pokemon.name)}</title>
+            </Head>
+            <main className="mx-10 md:mx-14 lg:mx-20 mt-10 mb-20">
+                <h2 className='font-bold text-3xl text-center'>{pokemon.name}</h2>
+                <h3 className='font-bold text-2xl text-center mb-5 sm:mb-10'>#{pokemon.number}</h3>
+                <div className='max-w-sm mx-auto sm:flex sm:justify-center sm:max-w-screen-xl'>
+                    <img src={pokemon.image} alt={pokemon.name} className='w-full rounded-md sm:w-72 sm:h-72 lg:w-96 lg:h-96' />
+                    <div className="details sm:ml-16">
+                        <div className="mt-5 mb-10 bg-gray-900 px-4 py-2 rounded-md sm:mt-0">
+                            <div>
+                                <div className="mb-5">
+                                    <p className={`mb-1 ${subtitlesStyle}`}>Height:</p>
+                                    <span className='mr-4'><span className='font-medium'>Min - </span> {pokemon.height.minimum}</span>
+                                    <span><span className='font-medium'>Max - </span> {pokemon.height.maximum}</span>
+                                </div>
+                                <div className="mb-5">
+                                    <p className={`mb-1 ${subtitlesStyle}`}>Weight:</p>
+                                    <span className='mr-4'><span className='font-medium'>Min - </span> {pokemon.weight.minimum}</span>
+                                    <span><span className='font-medium'>Max - </span> {pokemon.weight.maximum}</span>
+                                </div>
+                                <div className="mb-5">
+                                    <p className={` mb-1 ${subtitlesStyle}`}>Classification:</p>
+                                    <p>{pokemon.classification}</p>
+                                </div>
                             </div>
                         </div>
+                        {
+                            pokemon.types.length > 0 &&
+                            Property("Types", pokemon.types)
+                        }
+                        {
+                            pokemon.resistant.length > 0 &&
+                            Property("Resistant", pokemon.resistant)
+                        }
+                        {
+                            pokemon.weaknesses.length > 0 &&
+                            Property("Weaknesses", pokemon.weaknesses)
+                        }
+                        <button className={`mt-10 bg-gray-600 rounded-md text-white px-5 py-3 w-full ${subtitlesStyle}`}>
+                            Evolution
+                        </button>
                     </div>
-                    {
-                        pokemon.types.length > 0 &&
-                        Property("Types", pokemon.types)
-                    }
-                    {
-                        pokemon.resistant.length > 0 &&
-                        Property("Resistant", pokemon.resistant)
-                    }
-                    {
-                        pokemon.weaknesses.length > 0 &&
-                        Property("Weaknesses", pokemon.weaknesses)
-                    }
-                    <button className={`mt-10 bg-gray-600 rounded-md text-white px-5 py-3 w-full ${subtitlesStyle}`}>
-                        Evolution
-                    </button>
                 </div>
-            </div>
-        </main>
+            </main>
+        </>
     )
 }
 

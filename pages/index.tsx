@@ -4,6 +4,8 @@ import GET_BY_FIRST from "@/utils/queries/getByFirst"
 import apolloClient from "@/utils/apolloClient"
 import { useEffect, useState } from "react"
 import { IPokemon, IPokemonsQueryData } from "@/lib/types"
+import Head from "next/head"
+import getPageTitle from "@/utils/getPageTitle"
 
 // pre load first set of pokemons in the build time
 export const getStaticProps = async () => {
@@ -66,23 +68,28 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
   }, [pokemonsToShow])
 
   return (
-    <main className="mx-10 md:mx-14 lg:mx-20 mt-5 mb-10">
-      {
-        loading ?
-          <p>Loading...</p> :
-          <>
-            <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
-            <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
-              {
-                pokemonsToShow.map((pokemon) => (
-                  <PokemonCard key={pokemon.id} pokemon={pokemon} />
-                ))
-              }
-            </div>
-          </>
-      }
-      <Pager currentPage={currentPage} endPage={endPage} setCurrentPage={setCurrentPage} className="mt-5 sm:mt-10" />
-    </main>
+    <>
+      <Head>
+        <title>{getPageTitle()}</title>
+      </Head>
+      <main className="mx-10 md:mx-14 lg:mx-20 mt-5 mb-10">
+        {
+          loading ?
+            <p>Loading...</p> :
+            <>
+              <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
+              <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
+                {
+                  pokemonsToShow.map((pokemon) => (
+                    <PokemonCard key={pokemon.id} pokemon={pokemon} />
+                  ))
+                }
+              </div>
+            </>
+        }
+        <Pager currentPage={currentPage} endPage={endPage} setCurrentPage={setCurrentPage} className="mt-5 sm:mt-10" />
+      </main>
+    </>
   )
 }
 
