@@ -1,10 +1,12 @@
 import Chip from '@/components/Chip'
+import Popup from '@/components/Popup'
 import { IPokemonsQueryData, ISinglePokemon, ISinglePokemonQueryData } from '@/lib/types'
-import apolloClient from '@/utils/apolloClient'
+import apolloClient from '@/utils/api/services/apolloClient'
 import getPageTitle from '@/utils/getPageTitle'
-import GET_BY_ID from '@/utils/queries/getById'
-import GET_IDS_AND_NAMES from '@/utils/queries/getIdsAndNames'
+import GET_BY_ID from '@/utils/api/queries/getById'
+import GET_IDS_AND_NAMES from '@/utils/api/queries/getIdsAndNames'
 import Head from 'next/head'
+import { useState } from 'react'
 
 export const getStaticPaths = async () => {
     const count: string | undefined = process.env?.NEXT_PUBLIC_SINGLE_POKEMON_PRELOAD_COUNT
@@ -40,29 +42,38 @@ export const getStaticProps = async ({ params }: { params: { id: string, name: s
 const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
 
     const subtitlesStyle = "font-medium text-xl"
+    const [isPopupOpen, setIsPopupOpen] = useState(false)
 
-    const Property = (property: string, propertyValue: string[]) => (
-        <div className="mt-5">
-            <p className={`mb-3 capitalize ${subtitlesStyle}`}>{property} :</p>
-            <div className="flex flex-wrap">
-                {
-                    propertyValue.map((value: string, index: number) =>
-                        <Chip
-                            key={index}
-                            chipText={value}
-                            className={`text-white mr-3 mb-2 ${index % 2 === 0 ? 'bg-green-700' : 'bg-purple-700'}`}
-                        />
-                    )
-                }
+    function Property({ property, propertyValue }: { property: string, propertyValue: string[] }) {
+        return propertyValue.length > 0 ?
+            (<div className="mt-5">
+                <p className={`mb-3 capitalize ${subtitlesStyle}`}>{property} :</p>
+                <div className="flex flex-wrap">
+                    {
+                        propertyValue.map((value: string, index: number) =>
+                            <Chip
+                                key={index}
+                                chipText={value}
+                                className={`text-white mr-3 mb-2 ${index % 2 === 0 ? 'bg-green-700' : 'bg-purple-700'}`}
+                            />
+                        )
+                    }
+                </div>
             </div>
-        </div>
-    )
+            ) : <></>
+    }
 
     return (
         <>
             <Head>
                 <title>{getPageTitle(pokemon.name)}</title>
             </Head>
+            <Popup
+                isPopupOpen={isPopupOpen}
+                setIsPopupOpen={setIsPopupOpen}
+                pokemonId={pokemon.id}
+                pokemonName={pokemon.name}
+            />
             <main className="mx-10 md:mx-14 lg:mx-20 mt-10 mb-20">
                 <h2 className='font-bold text-3xl text-center'>{pokemon.name}</h2>
                 <h3 className='font-bold text-2xl text-center mb-5 sm:mb-10'>#{pokemon.number}</h3>
@@ -87,19 +98,13 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
                                 </div>
                             </div>
                         </div>
-                        {
-                            pokemon.types.length > 0 &&
-                            Property("Types", pokemon.types)
-                        }
-                        {
-                            pokemon.resistant.length > 0 &&
-                            Property("Resistant", pokemon.resistant)
-                        }
-                        {
-                            pokemon.weaknesses.length > 0 &&
-                            Property("Weaknesses", pokemon.weaknesses)
-                        }
-                        <button className={`mt-10 bg-gray-600 rounded-md text-white px-5 py-3 w-full ${subtitlesStyle}`}>
+                        <Property property="Types" propertyValue={pokemon.types} />
+                        <Property property="Resistant" propertyValue={pokemon.resistant} />
+                        <Property property="Weaknesses" propertyValue={pokemon.weaknesses} />
+                        <button
+                            onClick={() => setIsPopupOpen(true)}
+                            className={`mt-10 bg-gray-600 rounded-md text-white px-5 py-3 w-full ${subtitlesStyle}`}
+                        >
                             Evolution
                         </button>
                     </div>
