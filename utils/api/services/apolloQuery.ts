@@ -5,7 +5,7 @@ import GET_EVOLUTION from "../queries/getEvolution"
 import GET_BY_ID from "../queries/getById"
 import GET_BY_FIRST from "../queries/getByFirst"
 
-export const queryIdsAndNames = async (count: number | string) => {
+export const queryIdsAndNames = async (count: string | undefined) => {
     const query = GET_IDS_AND_NAMES
     const variables = { first: Number(count) ?? 20 }
     const response: IPokemonsQueryData = await apolloClient.query({ query, variables })
@@ -26,7 +26,7 @@ export const querySinglePokemon = async (id: string, name: string) => {
     return response
 }
 
-export const queryPokemons = async (count: number | string) => {
+export const queryPokemons = async (count: string | undefined) => {
     const query = GET_BY_FIRST
     const variables = { first: Number(count) ?? 20 }
     const response: IPokemonsQueryData = await apolloClient.query({ query, variables })
