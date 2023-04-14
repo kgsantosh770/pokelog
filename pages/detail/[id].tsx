@@ -3,7 +3,7 @@ import Popup from '@/components/Popup'
 import getPageTitle from '@/utils/getPageTitle'
 import Head from 'next/head'
 import { IPokemon, IPokemonsQueryData, ISinglePokemon, ISinglePokemonQueryData } from '@/lib/types'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { queryEvolutions, queryIdsAndNames, querySinglePokemon } from '@/utils/api/services/apolloQuery'
 
 export const getStaticPaths = async () => {

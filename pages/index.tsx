@@ -1,5 +1,5 @@
 import Pager from "@/components/Pager"
-import PokemonCard from "@/components/PokemonCard"
+import PokemonCard, { PokemonCardSkeleton } from "@/components/PokemonCard"
 import GET_BY_FIRST from "@/utils/api/queries/getByFirst"
 import apolloClient from "@/utils/api/services/apolloClient"
 import { useEffect, useState } from "react"
@@ -67,26 +67,32 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
     pokemonsToShow.length === 0 && setEndPage(currentPage - 1);
   }, [pokemonsToShow])
 
+  const d = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
   return (
     <>
       <Head>
         <title>{getPageTitle()}</title>
       </Head>
       <main className="mx-10 md:mx-14 lg:mx-20 mt-5 mb-10">
-        {
-          loading ?
-            <p>Loading...</p> :
-            <>
-              <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
-              <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
+        <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
+        <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
+          {
+            loading ?
+              <>
+                {
+                  d.map((value) => <PokemonCardSkeleton key={value} />)
+                }
+              </> :
+              <>
                 {
                   pokemonsToShow.map((pokemon) => (
                     <PokemonCard key={pokemon.id} pokemon={pokemon} />
                   ))
                 }
-              </div>
-            </>
-        }
+              </>
+          }
+        </div>
         <Pager currentPage={currentPage} endPage={endPage} setCurrentPage={setCurrentPage} className="mt-5 sm:mt-10" />
       </main>
     </>
