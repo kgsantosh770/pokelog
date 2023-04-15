@@ -2,7 +2,7 @@
 Pokelog is web application to showcase different types of Pokemon catalogs and their properties. This application is developed as a part of Buyceps front-end developer assignment.
 
 ## 🚀 Demo
-Pokelog is deployed to vercel and is availabale globally. To see the demo visit [http://asdf.vercel.com](#pokelog)
+Pokelog is deployed to vercel and is availabale globally. To see the demo visit [https://pokelog.vercel.app/](https://pokelog.vercel.app/)
 
 ## Table of Contents
 
@@ -79,7 +79,7 @@ npm run dev
   ```
   npm start
   ```
-  
+
 ## 🔍 Pokémon API
 
 PokeLog uses the [Pokémon API documentation](https://wayfair.github.io/dociql/). The Pokémon API is GraphQL API. It's schema can be fetched using introspection query and can be used for generating code, documentations, tests etc.
