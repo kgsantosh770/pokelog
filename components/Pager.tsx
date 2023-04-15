@@ -4,41 +4,51 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 interface IPagerProps {
     currentPage: number,
     setCurrentPage: Dispatch<SetStateAction<number>>,
-    endPage: number | undefined,
+    lastPage: number | undefined,
     className?: string,
 }
 
 const Pager = (props: IPagerProps) => {
 
-    const [allPages, setAllPages] = useState([1, 2, 3])
+    const [displayPages, setDisplayPages] = useState([1, 2, 3])
+    const removeLastPage = () => displayPages.slice(0, displayPages.length - 1)
 
-    function handleArrowClick(direction: 'left' | 'right') {
-        if (direction === 'left' && props.currentPage > 1) {
-            allPages.length > 3 && setAllPages(allPages.slice(0, allPages.length - 1))
+    const handleLastPage = (): number | void => {
+        const lastDisplayedPage = displayPages[displayPages.length - 1]
+        if (props.lastPage && props.lastPage < props.currentPage && lastDisplayedPage >= props.lastPage) {
+            setDisplayPages(removeLastPage)
+            return props.currentPage - 1
+        }
+    }
+
+    const goToPreviousPage = () => {
+        if (props.currentPage > 1) {
+            displayPages.length > 3 && setDisplayPages(removeLastPage)
             props.setCurrentPage(props.currentPage - 1);
-        } else if (direction === 'right') {
-            if (props.endPage && props.endPage < props.currentPage) {
-                handleLastPage()
-            } else if (props.endPage !== props.currentPage) {
-                props.currentPage + 1 > allPages.length && setAllPages([...allPages, props.currentPage + 1]);
-                props.setCurrentPage(props.currentPage + 1)
-            }
         }
     }
 
-    const handleLastPage = () => {
-        if (props.endPage) {
-            allPages[allPages.length - 1] >= props.endPage && setAllPages(allPages.slice(0, allPages.length - 1))
-            props.setCurrentPage(props.endPage)
+    const goToNextPage = () => {
+        const goToPage = handleLastPage()
+        if (goToPage)
+            props.setCurrentPage(goToPage)
+        else {
+            if (props.currentPage + 1 > displayPages.length)
+                setDisplayPages([...displayPages, props.currentPage + 1])
+            props.setCurrentPage(props.currentPage + 1)
         }
     }
 
-    const handlePageNumberClick = (pageNumber: number) => {
-        if (pageNumber != props.currentPage) {
-            props.endPage && props.endPage <= props.currentPage ?
-                handleLastPage() :
-                props.setCurrentPage(pageNumber)
-        }
+    const handleArrowClick = (direction: 'left' | 'right') => {
+        if (direction === 'left')
+            goToPreviousPage()
+        else
+            goToNextPage()
+    }
+
+    const handlePageNumberClick = (clickedPage: number) => {
+        handleLastPage()
+        props.setCurrentPage(clickedPage)
     }
 
     return (
@@ -47,7 +57,7 @@ const Pager = (props: IPagerProps) => {
                 <KeyboardArrowLeft fontSize='large' style={{ color: props.currentPage <= 1 ? 'gray' : 'white' }} />
             </button>
             {
-                (allPages.slice(-3)).map((pageNumber) =>
+                (displayPages.slice(-3)).map((pageNumber) =>
                     <button
                         key={pageNumber}
                         className={`
@@ -60,8 +70,8 @@ const Pager = (props: IPagerProps) => {
                     </button>
                 )
             }
-            <button onClick={() => handleArrowClick('right')} disabled={props.endPage !== undefined && props.endPage <= props.currentPage}>
-                <KeyboardArrowRight fontSize='large' style={{ color: props.endPage ? 'gray' : 'white' }} />
+            <button onClick={() => handleArrowClick('right')} disabled={props.lastPage !== undefined && props.lastPage <= props.currentPage}>
+                <KeyboardArrowRight fontSize='large' style={{ color: props.lastPage && props.currentPage >= props.lastPage ? 'gray' : 'white' }} />
             </button>
         </div>
     )
