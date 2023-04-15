@@ -43,7 +43,7 @@ export const getStaticProps = async ({ params }: { params: { id: string, name: s
 
 const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
 
-    const subtitlesStyle = "mb-1 font-medium text-md uppercase"
+    const subtitlesStyle = "mb-1 text-md uppercase text-white"
     const [isPopupOpen, setIsPopupOpen] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
@@ -103,24 +103,38 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
                     <div className='flex items-center justify-center rounded-md overflow-hidden sm:w-32 md:w-56 min-w-[13rem] min-h-[14rem] h-fit p-4 bg-white'>
                         <img src={pokemon.image} alt={pokemon.name} className='w-full object-contain max-h-40' />
                     </div>
-                    <div className="details sm:ml-16">
-                        <div className="mt-5 mb-10 bg-gray-900 px-4 py-2 rounded-md sm:mt-0">
-                            <div>
-                                <div className="mb-5">
-                                    <p className={subtitlesStyle}>Height:</p>
-                                    <span className='mr-4'><span className='text-sm font-medium'>Min - </span> {pokemon.height.minimum}</span>
-                                    <span><span className='text-sm font-medium'>Max - </span> {pokemon.height.maximum}</span>
-                                </div>
-                                <div className="mb-5">
-                                    <p className={subtitlesStyle}>Weight:</p>
-                                    <span className='mr-4'><span className='text-sm font-medium'>Min - </span> {pokemon.weight.minimum}</span>
-                                    <span><span className='text-sm font-medium'>Max - </span> {pokemon.weight.maximum}</span>
-                                </div>
-                                <div className="mb-5">
-                                    <p className={subtitlesStyle}>Classification:</p>
-                                    <p className='text-sm'>{pokemon.classification}</p>
-                                </div>
-                            </div>
+                    <div className="details sm:ml-16 sm:min-w-[20rem] md:min-w-[28rem]">
+                        <div className="mt-5 mb-10 bg-sky-600 px-4 py-2 rounded-md sm:mt-0">
+                            <table className='text-black font-medium border-separate py-2'>
+                                <tbody>
+                                    <tr>
+                                        <td colSpan={2} className={subtitlesStyle}>Height:</td>
+                                    </tr>
+                                    <tr>
+                                        <td className='mr-4'>Min : {pokemon.height.minimum}</td>
+                                        <td>Max : {pokemon.height.maximum}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={2} className='py-2 sm:py-3'></td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={2} className={subtitlesStyle}>Weight:</td>
+                                    </tr>
+                                    <tr>
+                                        <td className='mr-4'>Min : {pokemon.weight.minimum}</td>
+                                        <td>Max : {pokemon.weight.maximum}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={2} className='py-2 sm:py-3'></td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={2} className={subtitlesStyle}>Classification:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{pokemon.classification}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <Property property="Types" propertyValue={pokemon.types} />
                         <Property property="Resistant" propertyValue={pokemon.resistant} />
