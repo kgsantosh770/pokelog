@@ -76,7 +76,7 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
       </Head>
       <main className="mx-10 md:mx-14 lg:mx-20 mt-5 mb-10">
         <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
-        <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
+        <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4 2xl:grid-cols-5">
           {
             loading ?
               <>
@@ -84,16 +84,18 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
                   d.map((value) => <PokemonCardSkeleton key={value} />)
                 }
               </> :
-              <>
-                {
-                  pokemonsToShow.map((pokemon) => (
-                    <PokemonCard key={pokemon.id} pokemon={pokemon} />
-                  ))
-                }
-              </>
+              endPage && endPage < currentPage ?
+                <p className="text-center">No results found</p> :
+                <>
+                  {
+                    pokemonsToShow.map((pokemon) => (
+                      <PokemonCard key={pokemon.id} pokemon={pokemon} />
+                    ))
+                  }
+                </>
           }
         </div>
-        <Pager currentPage={currentPage} endPage={endPage} setCurrentPage={setCurrentPage} className="mt-5 sm:mt-10" />
+        <Pager currentPage={currentPage} endPage={endPage} setCurrentPage={setCurrentPage} className="mt-10" />
       </main>
     </>
   )
