@@ -79,12 +79,12 @@ npm run dev
   ```
   npm start
   ```
-
+  
 ## 🔍 Pokémon API
 
 PokeLog uses the [Pokémon API documentation](https://wayfair.github.io/dociql/). The Pokémon API is GraphQL API. It's schema can be fetched using introspection query and can be used for generating code, documentations, tests etc.
 
 ## 🛡 Disclaimer
 
-  - PokeLog is not complete production ready application. The application needs more UI and feature enhancement.
+  - PokeLog is not a complete production ready application. The application needs more UI and feature enhancements and also a more clean optimization procedure to be performed.
   - Test cases has not been developed yet. Will be created in future releases if needed.
