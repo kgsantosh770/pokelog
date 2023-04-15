@@ -43,12 +43,13 @@ export const getStaticProps = async ({ params }: { params: { id: string, name: s
 
 const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
 
-    const subtitlesStyle = "font-medium text-xl"
+    const subtitlesStyle = "mb-1 font-medium text-md uppercase"
     const [isPopupOpen, setIsPopupOpen] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const [evolutions, setEvolutions] = useState<IPokemon[] | undefined>()
 
+    // properties using the chip component
     function Property({ property, propertyValue }: { property: string, propertyValue: string[] }) {
         return propertyValue.length > 0 ?
             (<div className="mt-5">
@@ -96,26 +97,28 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
                 loading={loading}
             />
             <main className="mx-10 md:mx-14 lg:mx-20 mt-10 mb-20">
-                <h2 className='font-bold text-3xl text-center'>{pokemon.name}</h2>
-                <h3 className='font-bold text-2xl text-center mb-5 sm:mb-10'>#{pokemon.number}</h3>
+                <h2 className='font-bold text-xl text-center'>{pokemon.name}</h2>
+                <h3 className='font-bold text-lg text-center mb-5 sm:mb-10'>#{pokemon.number}</h3>
                 <div className='max-w-sm mx-auto sm:flex sm:justify-center sm:max-w-screen-xl'>
-                    <img src={pokemon.image} alt={pokemon.name} className='w-full rounded-md sm:w-72 sm:h-72 lg:w-96 lg:h-96' />
+                    <div className='flex items-center justify-center rounded-md overflow-hidden sm:w-32 md:w-56 min-w-[13rem] min-h-[14rem] h-fit p-4 bg-white'>
+                        <img src={pokemon.image} alt={pokemon.name} className='w-full object-contain max-h-40' />
+                    </div>
                     <div className="details sm:ml-16">
                         <div className="mt-5 mb-10 bg-gray-900 px-4 py-2 rounded-md sm:mt-0">
                             <div>
                                 <div className="mb-5">
-                                    <p className={`mb-1 ${subtitlesStyle}`}>Height:</p>
-                                    <span className='mr-4'><span className='font-medium'>Min - </span> {pokemon.height.minimum}</span>
-                                    <span><span className='font-medium'>Max - </span> {pokemon.height.maximum}</span>
+                                    <p className={subtitlesStyle}>Height:</p>
+                                    <span className='mr-4'><span className='text-sm font-medium'>Min - </span> {pokemon.height.minimum}</span>
+                                    <span><span className='text-sm font-medium'>Max - </span> {pokemon.height.maximum}</span>
                                 </div>
                                 <div className="mb-5">
-                                    <p className={`mb-1 ${subtitlesStyle}`}>Weight:</p>
-                                    <span className='mr-4'><span className='font-medium'>Min - </span> {pokemon.weight.minimum}</span>
-                                    <span><span className='font-medium'>Max - </span> {pokemon.weight.maximum}</span>
+                                    <p className={subtitlesStyle}>Weight:</p>
+                                    <span className='mr-4'><span className='text-sm font-medium'>Min - </span> {pokemon.weight.minimum}</span>
+                                    <span><span className='text-sm font-medium'>Max - </span> {pokemon.weight.maximum}</span>
                                 </div>
                                 <div className="mb-5">
-                                    <p className={` mb-1 ${subtitlesStyle}`}>Classification:</p>
-                                    <p>{pokemon.classification}</p>
+                                    <p className={subtitlesStyle}>Classification:</p>
+                                    <p className='text-sm'>{pokemon.classification}</p>
                                 </div>
                             </div>
                         </div>
@@ -124,9 +127,9 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
                         <Property property="Weaknesses" propertyValue={pokemon.weaknesses} />
                         <button
                             onClick={() => handleEvolutionButtonClick()}
-                            className={`mt-10 bg-gray-600 rounded-md text-white px-5 py-3 w-full ${subtitlesStyle}`}
+                            className={`mt-10 bg-sky-600 rounded-md text-white px-5 py-3 w-full ${subtitlesStyle}`}
                         >
-                            Evolution
+                            Check Evolution
                         </button>
                     </div>
                 </div>

@@ -21,14 +21,16 @@ const Popup = (props: IPopupProps) => {
     const Pokemon = ({ pokemon }: { pokemon: IPokemon }) => {
         return (
             <div className='md:mx-7'>
-                <img
-                    src={pokemon.image}
-                    alt={pokemon.name}
-                    className='w-36 h-36 rounded-full mx-auto mb-2'
-                />
+                <div className='mx-auto bg-white w-36 h-36 rounded-full mb-2 overflow-hidden'>
+                    <img
+                        src={pokemon.image}
+                        alt={pokemon.name}
+                        className='mx-auto object-contain max-w-[9rem] max-h-[9rem] scale-75'
+                    />
+                </div>
                 <span className='text-lg font-bold mr-2'>{pokemon.name}</span>
                 <span className='text-lg font-medium'>#{pokemon.number}</span>
-                <div className='mt-3'>
+                <div className='mt-3 mx-auto'>
                     {
                         pokemon.types.length > 0 &&
                         pokemon.types.map((type: string, index: number) => (
@@ -37,7 +39,7 @@ const Popup = (props: IPopupProps) => {
                                 chipText={type}
                                 className={`
                                     ${index % 2 === 0 ? 'bg-green-700' : 'bg-purple-700'}
-                                    mx-2
+                                    mx-2 inline-block
                                 `}
                             />
                         ))
@@ -55,7 +57,7 @@ const Popup = (props: IPopupProps) => {
             `}
         >
             <div className="fixed inset-0 flex justify-center items-center">
-                <div className="bg-gray-800 overflow-scroll px-8 py-16 rounded-lg w-[80%] md:max-w-screen-md h-fit max-h-[80%]">
+                <div className="bg-gray-800 overflow-scroll px-8 py-10 md:py-6 rounded-lg w-[80%] md:max-w-screen-sm md:w-fit h-fit max-h-[80%] md:overflow-auto">
                     <button
                         className="absolute top-0 right-0 md:top-5 md:right-10 m-4 text-gray-500 hover:text-gray-600"
                         onClick={() => props.setIsPopupOpen(false)}
@@ -77,7 +79,7 @@ const Popup = (props: IPopupProps) => {
                                         </p>
                                     </> :
                                     <>
-                                        {props.evolutions && props.evolutions.length > 0 && <h2 className="text-3xl font-bold mb-14 md:basis-full">Evolutions</h2>}
+                                        {props.evolutions && props.evolutions.length > 0 && <h2 className="text-2xl font-bold mb-8 md:mb-5 md:basis-full">Evolutions</h2>}
                                         {
                                             props.evolutions && props.evolutions.length > 0 ?
                                                 props.evolutions.map((pokemon, index) => (
@@ -97,7 +99,9 @@ const Popup = (props: IPopupProps) => {
                                                     </div>
                                                 )) :
                                                 <>
-                                                    <Info sx={{ mb: 2 }} fontSize='large' />
+                                                    <div className='md:basis-full mb-2'>
+                                                        <Info fontSize='large' />
+                                                    </div>
                                                     <p className='text-lg font-medium'>
                                                         Pokemon has not evolved further.
                                                     </p>
