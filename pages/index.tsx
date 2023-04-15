@@ -31,7 +31,7 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
   }
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [endPage, setEndPage] = useState<number | undefined>(undefined)
+  const [lastPage, setLastPage] = useState<number | undefined>(undefined)
   const [allPokemons, setAllPokemons] = useState(pokemons)
   const [loading, setLoading] = useState(false)
   const [pokemonsToShow, setPokemonsToShow] = useState(slicePerPage(allPokemons, currentPage, 20))
@@ -64,7 +64,7 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
   // when there is no more data limit the page count
   useEffect(() => {
     setLoading(false);
-    pokemonsToShow.length === 0 && setEndPage(currentPage - 1);
+    pokemonsToShow.length === 0 && setLastPage(currentPage - 1);
   }, [pokemonsToShow])
 
   const d = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -76,26 +76,29 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
       </Head>
       <main className="mx-10 md:mx-14 lg:mx-20 mt-5 mb-10">
         <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
-        <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4 2xl:grid-cols-5">
-          {
-            loading ?
-              <>
-                {
-                  d.map((value) => <PokemonCardSkeleton key={value} />)
-                }
-              </> :
-              endPage && endPage < currentPage ?
-                <p className="text-center">No results found</p> :
-                <>
-                  {
-                    pokemonsToShow.map((pokemon) => (
-                      <PokemonCard key={pokemon.id} pokemon={pokemon} />
-                    ))
-                  }
-                </>
-          }
-        </div>
-        <Pager currentPage={currentPage} endPage={endPage} setCurrentPage={setCurrentPage} className="mt-10" />
+        {
+          lastPage && lastPage < currentPage ?
+            <p className="text-center">No results found</p> :
+            <div className="sm:grid sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4 2xl:grid-cols-5">
+              {
+                loading ?
+                  <>
+                    {
+                      d.map((value) => <PokemonCardSkeleton key={value} />)
+                    }
+                  </> :
+                  <>
+                    {
+                      pokemonsToShow.map((pokemon) => (
+                        <PokemonCard key={pokemon.id} pokemon={pokemon} />
+                      ))
+                    }
+                  </>
+              }
+            </div>
+        }
+
+        <Pager currentPage={currentPage} lastPage={lastPage} setCurrentPage={setCurrentPage} className="mt-10" />
       </main>
     </>
   )
