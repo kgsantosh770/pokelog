@@ -29,13 +29,13 @@ const PokemonCard = ({ pokemon }: { pokemon: IPokemon }) => {
 export const PokemonCardSkeleton = () => {
     return (
         <div className='bg-gray-800 rounded-md mb-5 mx-auto w-full max-w-xs'>
-            <div className='animate-skimmer w-full h-40 mb-6' />
+            <div className='animate-pulse bg-gray-400 w-full h-40 mb-6' />
             <div className="px-5 pb-4 sm:px-3">
-                <p className='animate-skimmer mb-2 h-3.5 w-[40%] rounded-sm'></p>
-                <p className='animate-skimmer mb-3 h-3.5 w-[80%] rounded-sm'></p>
+                <p className='animate-pulse bg-gray-400 mb-2 h-3.5 w-[40%] rounded-sm'></p>
+                <p className='animate-pulse bg-gray-400 mb-3 h-3.5 w-[80%] rounded-sm'></p>
                 <div className='flex space-x-2 justify-start'>
-                    <span className='animate-skimmer w-[4rem] pt-1 pb-2 px-4 rounded-lg h-8'></span>
-                    <span className='animate-skimmer w-[4rem] pt-1 pb-2 px-4 rounded-lg h-8'></span>
+                    <span className='animate-pulse bg-gray-400 w-[4rem] pt-1 pb-2 px-4 rounded-lg h-8'></span>
+                    <span className='animate-pulse bg-gray-400 w-[4rem] pt-1 pb-2 px-4 rounded-lg h-8'></span>
                 </div>
             </div>
         </div>
