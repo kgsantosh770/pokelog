@@ -1,38 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PokeLog
+Pokelog is web application to showcase different types of Pokemon catalogs and their properties. This application is developed as a part of Buyceps front-end developer assignment.
 
-## Getting Started
+## 🚀 Demo
+Pokelog is deployed to vercel and is availabale globally. To see the demo visit [http://asdf.vercel.com](#pokelog)
 
-First, run the development server:
+## Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+[PokeLog](#pokelog)
+  - [🚀 Demo](#-demo)
+  - [Table of Contents](#table-of-contents)
+  - [🧑‍💻 Major Tech Stack](#-major-tech-stack)
+  - [📋 Requirements](#-requirements)
+  - [💾 Installation](#-installation)
+  - [🔧 Usage](#-usage)
+  - [🔍 Pokémon API](#-pokémon-api)
+  - [🛡 Disclaimer](#-disclaimer)
+  
+## 🧑‍💻 Major Tech Stack
+  - Next.js
+  - GraphQL
+  - Apollo Client
+
+## 📋 Requirements
+  - Node - v16.19.0 or higher
+  - npm - 8.19.3 or higher
+  - Next.js - v13.3.0 or highter
+  
+## 💾 Installation
+To install PokeLog web appliction, follow these steps
+1. Make sure you have all the **requirements** above, if not, install/get them.
+
+_The following commands should be executed in a CMD, Bash or Powershell window. To do this, go to a folder on your computer, click in the folder path at the top and type CMD, then press enter._
+
+2. Clone the repository:
+   For this step you need Git installed, but you can just download the zip file instead by clicking the button at the top of this page ☝️
+
+```
+git clone https://github.com/kgsantosh770/pokelog.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Navigate to the project directory:
+   _(Type this into your CMD window, you're aiming to navigate the CMD window to the repository you just downloaded)_
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+cd 'pokelog'
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+4. Install the required dependencies:
+   _(Again, type this into your CMD window)_
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+5. Rename `.env.template` to `.env`.
 
-## Learn More
+## 🔧 Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. Run the `pokelog` dev server in your terminal:
+   _(Type this into your CMD window)_
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+  - This will start the development server. When you hit the URL [http://localhost:3000/](http://localhost:3000/) you can see the application running.
 
-## Deploy on Vercel
+2. Optional - If you need to the webapp for production like setup (ie. to generate the static pages in build time) run the build command:
+   _(Type this into your CMD window)_
+  
+  ```
+  npm build
+  ```
+  
+  - once the build is completed, start the server:
+   _(Type this into your CMD window)_
+  
+  ```
+  npm start
+  ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔍 Pokémon API
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+PokeLog uses the [Pokémon API documentation](https://wayfair.github.io/dociql/). The Pokémon API is GraphQL API. It's schema can be fetched using introspection query and can be used for generating code, documentations, tests etc.
+
+## 🛡 Disclaimer
+
+  - PokeLog is not complete production ready application. The application needs more UI and feature enhancement.
+  - Test cases has not been developed yet. Will be created in future releases if needed.
