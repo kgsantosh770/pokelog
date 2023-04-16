@@ -33,7 +33,7 @@ const Popup = (props: IPopupProps) => {
                     <img
                         src={pokemon.image}
                         alt={pokemon.name}
-                        className='mx-auto object-contain max-w-[9rem] max-h-[9rem] scale-75'
+                        className='mx-auto object-contain w-36 h-36 scale-75'
                     />
                 </div>
                 <span className='text-lg font-bold mr-2'>{pokemon.name}</span>
