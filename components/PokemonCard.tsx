@@ -1,12 +1,18 @@
-import React from 'react'
-import Chip from './Chip'
+// imports from packages
 import Link from 'next/link'
 import { IPokemon } from '@/lib/types'
+
+// imports from app
+import Chip from './Chip'
 
 const PokemonCard = ({ pokemon }: { pokemon: IPokemon }) => {
     return (
         <Link href={`detail/${pokemon.id}`} className='block bg-white text-black rounded-md mb-5 overflow-hidden mx-auto group w-full max-w-xs sm:px-1'>
-            <img src={pokemon.image} alt={pokemon.name} className='scale-90 group-hover:scale-100 transition-all mx-auto w-48 h-48 object-contain' />
+            <img
+                src={pokemon.image}
+                alt={pokemon.name}
+                className='scale-90 group-hover:scale-100 transition-all mx-auto w-48 h-48 object-contain'
+            />
             <div className="px-5 pb-4 sm:px-3">
                 <p className='text-gray-500 font-bold mb-1'>#{pokemon.number}</p>
                 <p className='text-lg font-medium mb-2'>{pokemon.name}</p>
