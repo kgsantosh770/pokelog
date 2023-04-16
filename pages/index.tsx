@@ -64,7 +64,8 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
   // when there is no more data limit the page count
   useEffect(() => {
     setLoading(false);
-    pokemonsToShow.length === 0 && setLastPage(currentPage - 1);
+    pokemonsToShow.length === 0 ? setLastPage(currentPage - 1) :
+      pokemonsToShow.length < 20 && setLastPage(currentPage)
   }, [pokemonsToShow])
 
   const d = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
