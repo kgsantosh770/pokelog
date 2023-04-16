@@ -38,7 +38,7 @@ const About = () => {
                         </li>
                         <li className="mb-2"><b>Purpose - </b>The web application is a result of an assignment to test front-end development skills.</li>
                         <li className="mb-2"><b>Source code - </b> <a href="" className="text-sky-500">Github</a> </li>
-                        <li className="mb-2"><b>Deployment - </b>Deployed in `Vercel` and `Netlify` platforms.</li>
+                        <li className="mb-2"><b>Deployment - </b>Deployed in `Vercel` and `Netlify` platforms. Please read the deployment section in github readme.</li>
                         <li className="mb-2"><b>Note - </b>The web application deployed at `Vercel` will not render the pokemon details due to some limitations in free tier plan.</li>
                     </ul>
                 </div>
