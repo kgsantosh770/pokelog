@@ -55,7 +55,7 @@ cd 'pokelog'
 npm install
 ```
 
-5. Rename `.env.template` to `.env`.
+5. Rename `env.local-template` to `.env.local`. Provide the github handle for the project inside the file. 
 
 ## 🔧 Usage
 
