@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface IChipProps {
   chipText: string,
   className?: string,

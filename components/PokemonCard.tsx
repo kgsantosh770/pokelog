@@ -1,7 +1,9 @@
-import React from 'react'
-import Chip from './Chip'
+// imports from packages
 import Link from 'next/link'
 import { IPokemon } from '@/lib/types'
+
+// imports from app
+import Chip from './Chip'
 
 const PokemonCard = ({ pokemon }: { pokemon: IPokemon }) => {
     return (

@@ -1,4 +1,4 @@
-import React from 'react'
+// imports from app
 import Navbar from './Navbar'
 
 interface ILayoutProps {

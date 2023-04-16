@@ -1,5 +1,6 @@
+// imports from packages
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
-import React, { Dispatch, SetStateAction, useState } from 'react'
 
 interface IPagerProps {
     currentPage: number,
@@ -10,46 +11,46 @@ interface IPagerProps {
 
 const Pager = (props: IPagerProps) => {
 
-    const [displayPages, setDisplayPages] = useState([1, 2, 3])
-    const removeLastPage = () => displayPages.slice(0, displayPages.length - 1)
+    const [displayPages, setDisplayPages] = useState<number[]>([1, 2, 3])
 
-    const handleLastPage = (): number | void => {
-        const lastDisplayedPage = displayPages[displayPages.length - 1]
-        if (props.lastPage && props.lastPage < props.currentPage && lastDisplayedPage >= props.lastPage) {
-            setDisplayPages(removeLastPage)
-            return props.currentPage - 1
-        }
+    // on every page changes, set the display pages accordingly
+    useEffect(() => {
+        const currentPage = props.currentPage
+        const lastPage = props.lastPage
+        let pages
+        if (currentPage === 1)
+            pages = [1, 2, 3]
+        else if (lastPage && lastPage <= currentPage)
+            pages = [currentPage - 2, currentPage - 1, currentPage]
+        else
+            pages = [currentPage - 1, currentPage, currentPage + 1]
+
+        setDisplayPages(pages)
+    }, [props.currentPage, props.lastPage])
+
+
+    function goToPreviousPage() {
+        const previousPage = props.currentPage - 1
+        if (props.currentPage > 1)
+            props.setCurrentPage(previousPage);
     }
 
-    const goToPreviousPage = () => {
-        if (props.currentPage > 1) {
-            displayPages.length > 3 && setDisplayPages(removeLastPage)
-            props.setCurrentPage(props.currentPage - 1);
-        }
+
+    function goToNextPage() {
+        const nextPage = props.currentPage + 1
+        if (props.lastPage && nextPage > props.lastPage)
+            return
+        props.setCurrentPage(props.currentPage + 1)
     }
 
-    const goToNextPage = () => {
-        const goToPage = handleLastPage()
-        if (goToPage)
-            props.setCurrentPage(goToPage)
-        else {
-            if (props.currentPage + 1 > displayPages.length)
-                setDisplayPages([...displayPages, props.currentPage + 1])
-            props.setCurrentPage(props.currentPage + 1)
-        }
-    }
 
-    const handleArrowClick = (direction: 'left' | 'right') => {
+    function handleArrowClick(direction: 'left' | 'right') {
         if (direction === 'left')
             goToPreviousPage()
         else
             goToNextPage()
     }
 
-    const handlePageNumberClick = (clickedPage: number) => {
-        handleLastPage()
-        props.setCurrentPage(clickedPage)
-    }
 
     return (
         <div className={`flex justify-center items-center ${props.className}`}>
@@ -64,7 +65,7 @@ const Pager = (props: IPagerProps) => {
                             ${props.currentPage === pageNumber && 'bg-gray-500'}
                             font-medium border-2 border-white w-10 h-10 text-center rounded-full mx-2
                         `}
-                        onClick={() => handlePageNumberClick(pageNumber)}
+                        onClick={() => props.setCurrentPage(pageNumber)}
                     >
                         {pageNumber}
                     </button>

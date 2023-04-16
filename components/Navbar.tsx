@@ -1,21 +1,23 @@
-import { Close, GitHub, Menu } from '@mui/icons-material';
+// imports from packages
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react'
+import { Close, GitHub, Menu } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
 
-    const APP_NAME = process?.env?.NEXT_PUBLIC_APPNAME ?? ''
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const navigationRoutes: string[] = [APP_NAME, 'about']
+    const APPNAME = process?.env?.NEXT_PUBLIC_APPNAME
     const router = useRouter();
+    const navigationRoutes: string[] = ['home', 'about']
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+    // Converting navbar menu option to link element
     const NavigationLink = ({ href, text }: { href: string, text: string }) => {
-        const path = (href === `/${APP_NAME}`) ? '/' : href
+        const path = href === '/home' ? '/' : href
         const isActive = router.asPath === path
         return (
             <Link
-                href={href === "/home" ? "/" : path}
+                href={path}
                 type='button'
                 className={`
                     ${isActive ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} 
@@ -23,12 +25,12 @@ const Navbar = () => {
                 `}
                 onClick={() => setIsMobileMenuOpen(false)}
             >
-
                 {text}
             </Link>
         );
     }
 
+    // set of navbar menus
     const NavigationMenus = () => {
         return (
             <>
@@ -63,13 +65,14 @@ const Navbar = () => {
 
                     {/* Non mobile menu */}
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                        <div className="flex flex-shrink-0 items-center">
+                        <Link href="/" className="flex flex-shrink-0 items-center">
                             <img
                                 className="block h-8 w-auto"
                                 src="/pokeball.png"
                                 alt="Pokemon"
                             />
-                        </div>
+                            {APPNAME && <p className='ml-2 text-lg font-bold'>{APPNAME}</p>}
+                        </Link>
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 <NavigationMenus />
@@ -80,7 +83,7 @@ const Navbar = () => {
                     {/* Github link on right side of navbar*/}
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <a
-                            href={process.env?.NEXT_PUBLIC_GITHUB_LINK ?? ''}
+                            href={process?.env?.NEXT_PUBLIC_GITHUB_LINK ?? ''}
                             target='blank'
                             type="button"
                             className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"

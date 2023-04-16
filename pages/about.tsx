@@ -1,7 +1,10 @@
+// imports from packages
+import Head from "next/head"
+import { LinkedIn } from "@mui/icons-material"
+
+// imports from app
 import Chip from "@/components/Chip"
 import getPageTitle from "@/utils/getPageTitle"
-import { GitHub } from "@mui/icons-material"
-import Head from "next/head"
 
 const About = () => {
 
@@ -14,7 +17,7 @@ const About = () => {
                 <title>{getPageTitle("About")}</title>
             </Head>
             <div className='py-3 px-4 max-w-xl mx-auto'>
-                <h1 className='text-xl font-bold mb-4 sm:text-3xl text-center uppercase'>{APP_NAME}</h1>
+                <h1 className='text-xl font-bold mb-3 sm:text-3xl text-center uppercase'>{APP_NAME}</h1>
                 <div className="flex flex-wrap">
                     <p className='text-xl mb-3 mt-5 font-medium basis-full'>Tech stacks used:</p>
                     {
@@ -26,13 +29,17 @@ const About = () => {
                         ))
                     }
                 </div>
-                <div className="my-10">
+                <div className="mt-10">
                     <p className='text-xl mb-3 font-medium basis-full'>Developer Note:</p>
                     <ul className="list-disc ml-4">
-                        <li>Hey there !!!. My name is <b>Santosh</b></li>
-                        <li>I have developed this web application as a part of <i>Buycep</i> assignment.</li>
-                        <li>The source code is available in <a href="" className="text-sky-500">Github</a> </li>
-                        <li>I have deployed the app in <i>Vercel</i> platform.</li>
+                        <li className="mb-2">
+                            <span>Hey 👋 My name is <b>`Santosh`</b>. Get to know me more 👉 </span>
+                            <a href="https://www.linkedin.com/in/santoshkg/"><LinkedIn></LinkedIn></a>
+                        </li>
+                        <li className="mb-2"><b>Purpose - </b>The web application is a result of an assignment to test front-end development skills.</li>
+                        <li className="mb-2"><b>Source code - </b> <a href="" className="text-sky-500">Github</a> </li>
+                        <li className="mb-2"><b>Deployment - </b>Deployed in `Vercel` and `Netlify` platforms.</li>
+                        <li className="mb-2"><b>Note - </b>The web application deployed at `Vercel` will not render the pokemon details due to some limitations in free tier plan.</li>
                     </ul>
                 </div>
             </div>

@@ -68,15 +68,13 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
       pokemonsToShow.length < 20 && setLastPage(currentPage)
   }, [pokemonsToShow])
 
-  const d = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
   return (
     <>
       <Head>
         <title>{getPageTitle()}</title>
       </Head>
       <main className="mx-10 md:mx-14 lg:mx-20 mt-5 mb-10">
-        <h1 className="text-3xl font-bold text-white mb-10 text-center">Pokemons</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-10 sm:mb-16 text-center">Pokemon Catalogs</h1>
         {
           lastPage && lastPage < currentPage ?
             <p className="text-center">No results found</p> :
@@ -85,7 +83,7 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
                 loading ?
                   <>
                     {
-                      d.map((value) => <PokemonCardSkeleton key={value} />)
+                      Array.from(Array(20).keys()).map((value) => <PokemonCardSkeleton key={value} />)
                     }
                   </> :
                   <>

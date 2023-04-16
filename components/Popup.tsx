@@ -1,7 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import Chip from './Chip';
+// imports from packages
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { IPokemon } from '@/lib/types';
 import { Info, KeyboardArrowDown, KeyboardArrowRight, Error } from '@mui/icons-material';
+
+// imports from app
+import Chip from './Chip';
 
 interface IPopupProps {
     isPopupOpen: boolean,
@@ -13,11 +16,16 @@ interface IPopupProps {
 
 const Popup = (props: IPopupProps) => {
 
+    // when the popup is open, stop background scroll
     useEffect(() => {
-        if (props.isPopupOpen) window.document.body.style.overflow = "hidden";
-        else if (window.document.body.style.overflow !== null) window.document.body.style.removeProperty('overflow');
+        if (props.isPopupOpen) 
+            window.document.body.style.overflow = "hidden";
+        else if (window.document.body.style.overflow !== null) 
+            window.document.body.style.removeProperty('overflow');
     }, [props.isPopupOpen])
 
+
+    // Every single pokemon box inside popup
     const Pokemon = ({ pokemon }: { pokemon: IPokemon }) => {
         return (
             <div className='md:mx-7'>
@@ -49,6 +57,7 @@ const Popup = (props: IPopupProps) => {
         )
     }
 
+    
     return (
         <div
             className={`
