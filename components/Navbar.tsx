@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react'
 import { Close, GitHub, Menu } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const Navbar = () => {
 
@@ -64,12 +65,14 @@ const Navbar = () => {
                     </div>
 
                     {/* Non mobile menu */}
-                    <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <div className="flex flex-1 relative items-center justify-center sm:items-stretch sm:justify-start">
                         <Link href="/" className="flex flex-shrink-0 items-center">
-                            <img
-                                className="block h-8 w-auto"
+                            <Image
                                 src="/pokeball.png"
-                                alt="Pokemon"
+                                alt={APPNAME ?? 'logo'}
+                                className='block'
+                                width={32}
+                                height={32}
                             />
                             {APPNAME && <p className='ml-2 text-lg font-bold'>{APPNAME}</p>}
                         </Link>

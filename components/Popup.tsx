@@ -5,6 +5,7 @@ import { Info, KeyboardArrowDown, KeyboardArrowRight, Error } from '@mui/icons-m
 
 // imports from app
 import Chip from './Chip';
+import Image from 'next/image';
 
 interface IPopupProps {
     isPopupOpen: boolean,
@@ -18,9 +19,9 @@ const Popup = (props: IPopupProps) => {
 
     // when the popup is open, stop background scroll
     useEffect(() => {
-        if (props.isPopupOpen) 
+        if (props.isPopupOpen)
             window.document.body.style.overflow = "hidden";
-        else if (window.document.body.style.overflow !== null) 
+        else if (window.document.body.style.overflow !== null)
             window.document.body.style.removeProperty('overflow');
     }, [props.isPopupOpen])
 
@@ -29,11 +30,13 @@ const Popup = (props: IPopupProps) => {
     const Pokemon = ({ pokemon }: { pokemon: IPokemon }) => {
         return (
             <div className='md:mx-7'>
-                <div className='mx-auto bg-white w-36 h-36 rounded-full mb-2 overflow-hidden'>
-                    <img
+                <div className='mx-auto bg-white w-36 h-36 rounded-full mb-2 overflow-hidden relative'>
+                    <Image
                         src={pokemon.image}
                         alt={pokemon.name}
                         className='mx-auto object-contain max-w-[9rem] max-h-[9rem] scale-75'
+                        fill
+                        priority
                     />
                 </div>
                 <span className='text-lg font-bold mr-2'>{pokemon.name}</span>
@@ -57,11 +60,11 @@ const Popup = (props: IPopupProps) => {
         )
     }
 
-    
+
     return (
         <div
             className={`
-                fixed inset-0 bg-black bg-opacity-90 transition-opacity 
+                fixed inset-0 bg-black bg-opacity-90 transition-opacity z-10
                 ${props.isPopupOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
             `}
         >

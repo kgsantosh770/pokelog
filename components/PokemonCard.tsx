@@ -4,11 +4,18 @@ import { IPokemon } from '@/lib/types'
 
 // imports from app
 import Chip from './Chip'
+import Image from 'next/image'
 
 const PokemonCard = ({ pokemon }: { pokemon: IPokemon }) => {
     return (
-        <Link href={`detail/${pokemon.id}`} className='block bg-white text-black rounded-md mb-5 overflow-hidden mx-auto group w-full max-w-xs sm:px-1'>
-            <img src={pokemon.image} alt={pokemon.name} className='scale-90 group-hover:scale-100 transition-all mx-auto w-48 h-48 object-contain' />
+        <Link href={`detail/${pokemon.id}`} className='block relative bg-white text-black rounded-md mb-5 overflow-hidden mx-auto group w-full max-w-xs sm:px-1'>
+            <Image
+                src={pokemon.image}
+                alt={pokemon.name}
+                className='scale-75 group-hover:scale-90 transition-all mx-auto object-contain h-48'
+                height={192}
+                width={192}
+            />
             <div className="px-5 pb-4 sm:px-3">
                 <p className='text-gray-500 font-bold mb-1'>#{pokemon.number}</p>
                 <p className='text-lg font-medium mb-2'>{pokemon.name}</p>
