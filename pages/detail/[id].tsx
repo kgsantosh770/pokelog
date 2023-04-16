@@ -8,7 +8,6 @@ import Popup from '@/components/Popup'
 import getPageTitle from '@/utils/getPageTitle'
 import { IPokemon, IPokemonsQueryData, ISinglePokemon, ISinglePokemonQueryData } from '@/lib/types'
 import { queryEvolutions, queryIdsAndNames, querySinglePokemon } from '@/utils/api/services/apolloQuery'
-import Image from 'next/image'
 
 // generate static paths for the first set (count specified in env file) of data at build time
 export const getStaticPaths = async () => {
@@ -107,13 +106,11 @@ const Details = ({ pokemon }: { pokemon: ISinglePokemon }) => {
                 <h2 className='font-bold text-xl text-center'>{pokemon.name}</h2>
                 <h3 className='font-bold text-lg text-center mb-5 sm:mb-10'>#{pokemon.number}</h3>
                 <div className='max-w-sm mx-auto sm:flex sm:justify-center sm:max-w-screen-xl'>
-                    <div className='relative rounded-md overflow-hidden sm:w-32 md:w-56 min-w-[13rem] min-h-[14rem] h-fit bg-white'>
-                        <Image
+                    <div className='flex items-center justify-center rounded-md overflow-hidden sm:w-32 md:w-56 min-w-[13rem] min-h-[14rem] h-fit p-4 bg-white'>
+                        <img
                             src={pokemon.image}
                             alt={pokemon.name}
-                            className='object-contain max-h-40 m-auto'
-                            fill
-                            priority
+                            className='w-full object-contain max-h-40'
                         />
                     </div>
                     <div className="details sm:ml-16 sm:min-w-[20rem] md:min-w-[28rem]">
