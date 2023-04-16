@@ -72,8 +72,12 @@ const Home = ({ pokemons }: { pokemons: IPokemon[] }) => {
       setPokemonsToShow(slicedPokemons)
       updateLastPage(slicedPokemons.length)
     }
-    setLoading(false);
   }, [currentPage, allPokemons])
+
+  // stop loading when new pokemons to show is updated
+  useEffect(() => {
+    setLoading(false)
+  }, [pokemonsToShow])
 
   return (
     <>
