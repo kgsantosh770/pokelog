@@ -2,7 +2,9 @@
 Pokelog is web application to showcase different types of Pokemon catalogs and their properties. This application is developed as a part of Buyceps front-end developer assignment.
 
 ## 🚀 Demo
-Pokelog is deployed to vercel and is availabale globally. To see the demo visit [https://pokelog.vercel.app/](https://pokelog.vercel.app/)
+Pokelog is deployed to `Netlify` and is availabale globally. To see the demo visit this [Netlify URL](https://643c51c760c3a4000880aaff--gregarious-llama-429304.netlify.app/)
+
+Note: The application is also deployed to `Vercel`, but due to some free tier limitations some functionalities may not work properly (it may lead to server time out error). [Vercel URL](https://pokelog.vercel.app/)
 
 ## Table of Contents
 
