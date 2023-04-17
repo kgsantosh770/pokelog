@@ -23,8 +23,10 @@ const Popup = (props: IPopupProps) => {
     useEffect(() => {
         if (props.isPopupOpen)
             window.document.body.style.overflow = "hidden";
-        else if (window.document.body.style.overflow !== null)
+
+        return(()=>{
             window.document.body.style.removeProperty('overflow');
+        })
     }, [props.isPopupOpen])
 
 
