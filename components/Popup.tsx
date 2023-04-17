@@ -1,7 +1,10 @@
 // imports from packages
+import Info from '@mui/icons-material/Info'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import Error from '@mui/icons-material/Error'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 import { IPokemon } from '@/lib/types';
-import { Info, KeyboardArrowDown, KeyboardArrowRight, Error } from '@mui/icons-material';
 
 // imports from app
 import Chip from './Chip';
@@ -18,9 +21,9 @@ const Popup = (props: IPopupProps) => {
 
     // when the popup is open, stop background scroll
     useEffect(() => {
-        if (props.isPopupOpen) 
+        if (props.isPopupOpen)
             window.document.body.style.overflow = "hidden";
-        else if (window.document.body.style.overflow !== null) 
+        else if (window.document.body.style.overflow !== null)
             window.document.body.style.removeProperty('overflow');
     }, [props.isPopupOpen])
 
@@ -57,7 +60,7 @@ const Popup = (props: IPopupProps) => {
         )
     }
 
-    
+
     return (
         <div
             className={`

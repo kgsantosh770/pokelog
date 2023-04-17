@@ -1,6 +1,6 @@
 // imports from packages
 import Head from "next/head"
-import { LinkedIn } from "@mui/icons-material"
+import LinkedIn from "@mui/icons-material/LinkedIn"
 
 // imports from app
 import Chip from "@/components/Chip"
