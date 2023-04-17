@@ -1,9 +1,11 @@
 // imports from packages
 import Link from 'next/link';
-import { useState } from 'react'
-import { Close, GitHub, Menu } from '@mui/icons-material';
-import { useRouter } from 'next/router';
+import Close from "@mui/icons-material/Close"
+import GitHub from '@mui/icons-material/GitHub'
+import Menu from '@mui/icons-material/Menu'
 import Image from 'next/image';
+import { useState } from 'react'
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
 
@@ -73,6 +75,7 @@ const Navbar = () => {
                                 className='block'
                                 width={32}
                                 height={32}
+                                priority
                             />
                             {APPNAME && <p className='ml-2 text-lg font-bold'>{APPNAME}</p>}
                         </Link>

@@ -1,6 +1,7 @@
 // imports from packages
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
 
 interface IPagerProps {
     currentPage: number,

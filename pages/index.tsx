@@ -1,11 +1,14 @@
+// imports from packages
+import Head from "next/head"
+import { useEffect, useState } from "react"
+
+// imports from app
 import Pager from "@/components/Pager"
-import PokemonCard, { PokemonCardSkeleton } from "@/components/PokemonCard"
 import GET_BY_FIRST from "@/utils/api/queries/getByFirst"
 import apolloClient from "@/utils/api/services/apolloClient"
-import { useEffect, useState } from "react"
-import { IPokemon, IPokemonsQueryData } from "@/lib/types"
-import Head from "next/head"
 import getPageTitle from "@/utils/getPageTitle"
+import PokemonCard, { PokemonCardSkeleton } from "@/components/PokemonCard"
+import { IPokemon, IPokemonsQueryData } from "@/lib/types"
 
 // pre load first set of pokemons in the build time
 export const getStaticProps = async () => {
